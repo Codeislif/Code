@@ -1,0 +1,340 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Website</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+    <a class="brand" href="#" onclick="showPage('home'); return false;">
+        <span class="brand-icon">A</span>
+        <span>Educational Website</span>
+    </a>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav id="navigation">
+        <button onclick="showPage('home')">Home</button>
+        <button onclick="showPage('modules')">Lessons</button>
+        <button onclick="showPage('quiz')">Quiz</button>
+        <button onclick="showPage('games')">Mini Games</button>
+        <button id="recordsNav" onclick="showPage('records')">My Records</button>
+        <button id="adminNav" onclick="showPage('admin')" hidden>Admin</button>
+        <button id="logoutButton" onclick="logout()" hidden>Logout</button>
+    </nav>
+</header>
+
+<main>
+    <!-- LOGIN -->
+    <section id="login" class="page active">
+        <div class="auth-card">
+            <div class="auth-logo">R</div>
+            <p class="eyebrow">LEARN PHILIPPINE HISTORY</p>
+            <h1>Welcome Back!</h1>
+            <p class="muted">Sign in to continue your Rizal learning journey.</p>
+
+            <form onsubmit="login(event)">
+                <label for="loginUsername">Username</label>
+                <input id="loginUsername" required placeholder="Enter username">
+
+                <label for="loginPassword">Password</label>
+                <input id="loginPassword" type="password" required
+                       placeholder="Enter password">
+
+                <button class="primary full" type="submit">Login</button>
+            </form>
+
+            <p id="loginMessage" class="message"></p>
+            <p class="auth-switch">
+                No account yet?
+                <button class="text-button" onclick="showPage('register')">
+                    Register here
+                </button>
+            </p>
+
+           
+        </div>
+    </section>
+
+    <!-- REGISTRATION -->
+    <section id="register" class="page">
+        <div class="auth-card">
+            <p class="eyebrow">CREATE YOUR ACCOUNT</p>
+            <h1>Student Registration</h1>
+
+            <form onsubmit="registerUser(event)">
+                <label for="regName">Full name</label>
+                <input id="regName" required placeholder="Your full name">
+
+                <label for="regUsername">Username</label>
+                <input id="regUsername" required minlength="3"
+                       placeholder="Choose a username">
+
+                <label for="regPassword">Password</label>
+                <input id="regPassword" type="password" required minlength="6"
+                       placeholder="At least 6 characters">
+
+                <button class="primary full" type="submit">Create Account</button>
+            </form>
+
+            <p id="registerMessage" class="message"></p>
+            <button class="text-button" onclick="showPage('login')">
+                Back to login
+            </button>
+        </div>
+    </section>
+
+    <!-- HOME -->
+    <section id="home" class="page">
+        <div class="hero">
+            <div class="hero-content">
+                <p class="eyebrow">HISTORY • KNOWLEDGE • INSPIRATION</p>
+                <h1>Discover the Life of<br>Dr. José Rizal</h1>
+                <p>
+                    Explore the life, writings, and legacy of the Filipino
+                    national hero through lessons, quizzes, and fun games.
+                </p>
+                <button class="primary" onclick="showPage('modules')">
+                    Start Learning →
+                </button>
+                <button class="secondary" onclick="showPage('games')">
+                    Play Mini Games
+                </button>
+            </div>
+            <div class="hero-art">
+                <div class="portrait-placeholder">JR</div>
+                <p>“The youth is the hope of our future.”</p>
+                <span class="muted small">A commonly attributed paraphrase of Rizal's message</span>
+            </div>
+        </div>
+
+        <div class="section-heading">
+            <p class="eyebrow">YOUR LEARNING JOURNEY</p>
+            <h2>Explore and Learn</h2>
+        </div>
+
+        <div class="stats-grid">
+            <article class="stat-card">
+                <span class="stat-icon">📚</span>
+                <h3 id="homeModuleCount">0</h3>
+                <p>Learning Modules</p>
+            </article>
+            <article class="stat-card">
+                <span class="stat-icon">🏆</span>
+                <h3 id="homeBestScore">0%</h3>
+                <p>Best Quiz Score</p>
+            </article>
+            <article class="stat-card">
+                <span class="stat-icon">🎮</span>
+                <h3>3</h3>
+                <p>Mini Games</p>
+            </article>
+        </div>
+
+        <div class="section-heading">
+            <h2>Featured Lessons</h2>
+            <button class="text-button" onclick="showPage('modules')">
+                View all →
+            </button>
+        </div>
+        <div id="featuredModules" class="module-grid"></div>
+    </section>
+
+    <!-- MODULES -->
+    <section id="modules" class="page">
+        <div class="page-heading">
+            <p class="eyebrow">KNOWLEDGE LIBRARY</p>
+            <h1>Learning Modules</h1>
+            <p>Read each lesson and discover important moments in Rizal's life.</p>
+        </div>
+        <div id="moduleList" class="module-grid"></div>
+    </section>
+
+    <!-- LESSON DETAILS -->
+    <section id="lesson" class="page">
+        <button class="text-button" onclick="showPage('modules')">
+            ← Back to lessons
+        </button>
+        <article id="lessonContent" class="lesson-card"></article>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz" class="page">
+        <div class="page-heading">
+            <p class="eyebrow">TEST YOUR KNOWLEDGE</p>
+            <h1>Rizal Knowledge Quiz</h1>
+            <p>Answer the questions and see how much you have learned.</p>
+        </div>
+        <div id="quizArea" class="activity-card">
+            <div class="game-symbol">✏️</div>
+            <h2>Ready for the challenge?</h2>
+            <p>There are 10 multiple-choice questions.</p>
+            <button class="primary" onclick="startQuiz()">Start Quiz</button>
+        </div>
+    </section>
+
+    <!-- MINI GAMES -->
+    <section id="games" class="page">
+        <div class="page-heading">
+            <p class="eyebrow">LEARN • PLAY • DISCOVER</p>
+            <h1>Mini Games</h1>
+            <p>Have fun while learning about Dr. José Rizal!</p>
+        </div>
+
+        <div class="games-grid">
+            <article class="game-card">
+                <div class="game-symbol">🧠</div>
+                <h2>Rizal Trivia</h2>
+                <p>Answer questions about Rizal's life and achievements.</p>
+                <button class="primary" onclick="startTrivia()">Play Trivia</button>
+            </article>
+
+            <article class="game-card">
+                <div class="game-symbol">🃏</div>
+                <h2>Memory Match</h2>
+                <p>Match related facts and names in this memory game.</p>
+                <button class="primary" onclick="startMemory()">Play Memory</button>
+            </article>
+
+            <article class="game-card">
+                <div class="game-symbol">⏱️</div>
+                <h2>Beat the Clock</h2>
+                <p>Answer as many questions as you can in 30 seconds.</p>
+                <button class="primary" onclick="startClockGame()">Start Challenge</button>
+            </article>
+        </div>
+
+        <div id="gameArea" class="activity-card game-area">
+            <div class="game-symbol">🎮</div>
+            <h2>Choose a game to begin!</h2>
+            <p>Play, learn, and challenge yourself.</p>
+        </div>
+    </section>
+
+    <!-- STUDENT RECORDS -->
+    <section id="records" class="page">
+        <div class="page-heading">
+            <p class="eyebrow">PERSONAL PROGRESS</p>
+            <h1>My Records</h1>
+            <p>Review your quiz attempts and learning progress.</p>
+        </div>
+
+        <div class="stats-grid">
+            <article class="stat-card">
+                <h3 id="recordAttempts">0</h3>
+                <p>Quiz Attempts</p>
+            </article>
+            <article class="stat-card">
+                <h3 id="recordAverage">0%</h3>
+                <p>Average Score</p>
+            </article>
+            <article class="stat-card">
+                <h3 id="recordBest">0%</h3>
+                <p>Best Score</p>
+            </article>
+        </div>
+
+        <div class="table-card">
+            <h2>Quiz History</h2>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Activity</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentRecordTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADMIN DASHBOARD -->
+    <section id="admin" class="page">
+        <div class="page-heading">
+            <p class="eyebrow">ADMINISTRATION</p>
+            <h1>Admin Dashboard</h1>
+            <p>Manage learning modules, student accounts, and records.</p>
+        </div>
+
+        <div class="stats-grid">
+            <article class="stat-card">
+                <h3 id="adminStudentCount">0</h3>
+                <p>Student Accounts</p>
+            </article>
+            <article class="stat-card">
+                <h3 id="adminModuleCount">0</h3>
+                <p>Learning Modules</p>
+            </article>
+            <article class="stat-card">
+                <h3 id="adminAttemptCount">0</h3>
+                <p>Quiz Attempts</p>
+            </article>
+        </div>
+
+        <div class="table-card">
+            <h2>Manage Modules</h2>
+            <form class="admin-form" onsubmit="addModule(event)">
+                <label for="newModuleTitle">Module title</label>
+                <input id="newModuleTitle" required placeholder="Lesson title">
+
+                <label for="newModuleDescription">Short description</label>
+                <input id="newModuleDescription" required
+                       placeholder="Brief lesson description">
+
+                <label for="newModuleContent">Lesson content</label>
+                <textarea id="newModuleContent" required rows="4"
+                          placeholder="Write the lesson here..."></textarea>
+
+                <button class="primary" type="submit">Add Module</button>
+            </form>
+            <div id="adminModuleList"></div>
+        </div>
+
+        <div class="table-card">
+            <h2>Student Accounts</h2>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminStudentTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <h2>All Quiz Records</h2>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Activity</th>
+                            <th>Score</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminRecordTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>Rizal Learning Hub | An educational project about Philippine history</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
